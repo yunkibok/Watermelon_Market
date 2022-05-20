@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'follow.css') }}">
+    </head>
+    <body>
+        <header>
+                <a href='http://127.0.0.1:5500/templates/home.html'>
+                    <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}">
+                </a>
+                <form class='searchBar'>
+                    <input type='text' class='searchTxt' placeholder='키워드로 검색해보세요!'>
+                    <input type='submit' class='searchBtn' value='검색'>
+                </form>
+                <input type='button' value='회원가입' class='button' style='right: 25%' onclick="location.href='http://127.0.0.1:5500/templates/signUp.html'">
+                <input type='button' value='로그인' class='button' style='right: 15%' onclick="location.href='http://127.0.0.1:5500/templates/signIn.html'">
+        </header>
+        <nav>
+            <ul>
+                <li><a href='https://www.naver.com/'>상품 구경</a></li>
+                <li><a href='https://www.naver.com/'>상품 등록</a></li>
+                <li><a href='https://www.naver.com/'>상품 관리</a></li>
+                <li><a href='https://www.naver.com/'>팔로워 관리</a></li>
+            </ul>
+        </nav>
+        <div class='body'>
+            <div class='body' style='width:70%; height:100%; left:15%; background-color:white; top:0%; overflow-y:scroll;'>
+                
+                <div class='container'>
+                    <a href="http://naver.com">  
+                        <div class='followee'>이름</div>
+                    </a>
+                    <input type='button' value='언팔로우' class='unfollow'>
+                    <hr></hr>
+                    
+                </div>
+                <div class='container'>
+                    <a href="http://naver.com">  
+                        <div class='followee'>이름</div>
+                    </a>
+                    <input type='button' value='언팔로우' class='unfollow'>
+                    <hr></hr>
+                    
+                </div>
+                <div class='container'>
+                    <a href="http://naver.com">  
+                        <div class='followee'>이름</div>
+                    </a>
+                    <input type='button' value='언팔로우' class='unfollow'>
+                    <hr></hr>
+                    
+                </div>
+                
+            
+            </div>
+        </div>
+
+
+
+        <footer>
+            <p class='copyright'>Copyright 2022. Watermelon Market Inc.</p>
+        </footer>
+
+    </body>
+</html>

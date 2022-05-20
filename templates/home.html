@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'home.css') }}">
+        <!--flash 메세지를 보여주기 위한 프로세스-->
+        {% with messages=get_flashed_messages()%}
+        {% if messages %}
+            <script>
+                alert("{{messages[-1]}}")
+            </script>
+        {% endif %}
+        {%endwith%}
+
+    </head>
+    <body>
+        <header>
+                <a href='{{ url_for('home') }}'>
+                    <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}">
+                </a>
+                <form class='searchBar' action="{{url_for('search')}}">
+                    <input type='text' class='searchTxt' placeholder='키워드로 검색해보세요!'>
+                    <input type='submit' class='searchBtn' value='검색'>
+                </form>
+                {%if 'nickname' not in session%}
+                    <input type='button' value='회원가입' class='button' style='right: 25%' onclick="location.href='{{url_for('signUp')}}'">
+                    <input type='button' value='로그인' class='button' style='right: 15%' onclick="location.href='{{url_for('signIn')}}'">
+                {%else%}
+                <div class='button' style='right: 25%; text-align:end;'>환영합니다! <br><b>{{session['nickname']}}</b>님</div>
+                <input type='button' value='로그아웃' class='button' style='right: 15%' onclick="location.href='{{url_for('signOut')}}'">
+                {%endif%}
+        </header>
+        <nav>
+            <ul>
+                <li><a href='{{url_for('product')}}'>상품 구경</a></li>
+                <li><a href='{{url_for('register')}}'>상품 등록</a></li>
+                <li><a href='{{url_for('search')}}'>상품 관리</a></li>
+                <li><a href='{{url_for('follow')}}'>팔로워 관리</a></li>
+            </ul>
+        </nav>
+        <div class='body'>
+            <p class='sentence' style='top: 40%'>또 이용할 <span>수박</span>에 없는</p>
+            <p class='sentence' style='top: 50%'><span>수박</span> 마켓</p>
+            <img class='character' src="{{ url_for('static', filename = 'character1.png') }}">
+        </div>
+
+        <footer>
+            <p class='copyright'>Copyright 2022. Watermelon Market Inc.</p>
+        </footer>
+
+    </body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--동적으로 할당 가능한 값: <input>태그의 value들인 id, password, nickname-->
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'signUp.css') }}">
+        <!--flash 메세지를 보여주기 위한 프로세스-->
+        {% with messages=get_flashed_messages()%}
+            {% if messages %}
+                <script>
+                    alert("{{messages[-1]}}")
+                </script>
+            {% endif %}
+        {%endwith%}
+
+    </head>
+    <body>
+        <div class='body'>
+            <a href='{{ url_for('home') }}'>
+                <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}">
+            </a>
+            <div class="info">회원 정보를 입력해주세요</div>
+            <form class='signUpSection' action='{{url_for('signUp')}}' method='POST'>
+                <img src="{{ url_for('static', filename = 'id.png') }}" class='img'>
+                <input name='a_id' type='text' class='txt' placeholder='id'style='right: 20%; width:65%;' value={{id}}>
+                <input type='submit' value="중복 확인" class='chkBtn' onclick="javascript: form.action='{{url_for('idDuplicateCheck')}}'; form.method='POST';">
+                <img src="{{ url_for('static', filename = 'password.png') }}" class='img' style='top: 24%'>
+                <input name='a_password' type='text'class='txt' style='top: 24%' placeholder='password'value={{password}}>
+                <img src="{{ url_for('static', filename = 'nickname.png') }}" class='img' style='top: 48%'>
+                <input name='a_nickname' type='text'class='txt' style='top: 48%; right: 20%; width:65%;' placeholder='nickname' value={{nickname}}>
+                <input type='submit' value="중복 확인" class='chkBtn' style="top: 48%;" onclick="javascript: form.action='{{url_for('NicknameDuplicateCheck')}}'; form.method='POST';">
+                <hr></hr>
+                <input type='submit' class='btn' value= "회원가입" style=' top:76%;'>
+            </form>
+        </div>
+        <footer>
+            <p class='copyright'>Copyright 2022. Watermelon Market Inc.</p>
+        </footer>
+
+    </body>
+</html>
