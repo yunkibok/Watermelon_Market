@@ -17,7 +17,7 @@
                 <a href='{{ url_for('home') }}'>
                     <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}">
                 </a>
-                <form class='searchBar' action="{{url_for('search')}}">
+                <form class='searchBar' action="{{url_for('search',keyword='all')}}">
                     <input type='text' class='searchTxt' placeholder='키워드로 검색해보세요!'>
                     <input type='submit' class='searchBtn' value='검색'>
                 </form>
@@ -31,9 +31,9 @@
         </header>
         <nav>
             <ul>
-                <li><a href='{{url_for('product')}}'>상품 구경</a></li>
+                <li><a href='{{url_for('search', keyword='all')}}'>상품 구경</a></li>
                 <li><a href='{{url_for('register')}}'>상품 등록</a></li>
-                <li><a href='{{url_for('search')}}'>상품 관리</a></li>
+                <li><a href='{{url_for('search', keyword='all')}}'>상품 관리</a></li>
                 <li><a href='{{url_for('follow')}}'>팔로워 관리</a></li>
             </ul>
         </nav>

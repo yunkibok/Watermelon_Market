@@ -6,7 +6,7 @@ import os
 app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///project.sqlite3'
 app.config['SECRET_KEY']='project'
-app.config['UPLOAD_FOLDER']='./uploads/'
+app.config['UPLOAD_FOLDER']='./static/uploads/'
 
 db=SQLAlchemy(app)
 
@@ -31,8 +31,9 @@ class posts(db.Model):
     p_image1=db.Column(db.String(30))
     p_image2=db.Column(db.String(30))
     p_image3=db.Column(db.String(30))
+    p_soldOut=db.Column(db.Boolean, default=False)
     
-    def __init__(self, title, price, keyword, seller, description, image1, image2, image3):
+    def __init__(self, title, price, keyword, description, seller, image1, image2, image3):
         self.p_title=title
         self.p_keyword=keyword
         self.p_price=price
@@ -76,14 +77,6 @@ def home():
     registerimage2=''
     registerimage3='' 
     return render_template('home.html')
-
-@app.route('/search/')
-def search():
-    return render_template('search.html')
-
-@app.route('/product/')
-def product():
-    return render_template('product.html')
 
 # 회원가입 페이지에서 입력 값을 기억하는 변수들
 signUpId=''
@@ -298,12 +291,103 @@ def register():
     return render_template('register.html', title=registerTitle, price=registerPrice, description=registerDescription)
 
         
-            
+@app.route('/search/<keyword>', methods=['GET','POST'])
+def search(keyword):
+    if keyword=='all':
+        list=posts.query.all()
+        print(len(list))
+        return render_template('search.html', list=list, keyword=keyword)
+    elif keyword=='keyword':
+        temp=request.form['searchBar']
+        return redirect(url_for('search',keyword=temp))
+    else:
+        if keyword=='default':
+            flash('키워드를 선택한 후, 검색해주세요')
+            return redirect(url_for('search',keyword='all'))
+        list=posts.query.filter_by(p_keyword=keyword)
+        return render_template('search.html', list=list, keyword=keyword)
+           
     
+@app.route('/detail/<id>', methods=['GET','POST'])
+def detail(id):
+    post=posts.query.filter_by(id=id).first()
+    return render_template('detail.html', post=post) 
+
+@app.route('/image/<name>', methods=['GET','POST'])
+def image(name):
+    return render_template('image.html', image=name)     
+
+@app.route('/edit/<id>', methods=['GET','POST'])
+def edit(id):
+    post=posts.query.filter_by(id=id).first()
+    return render_template('edit.html', title=post.p_title, price=post.p_price, description=post.p_description,id=id) 
+
+updateTitle=''
+updatePrice=''
+updateDescription=''
+updateimage1=''
+updateimage2=''
+updateimage3='' 
+@app.route('/update/<id>', methods=['GET','POST'])
+def update(id):
+    global updateTitle
+    global updatePrice
+    global updateDescription
+    global updateimage1
+    global updateimage2
+    global updateimage3
     
+    if not request.form['p_title'] or not request.form['p_price'] or request.form['p_keyword']=='키워드 *':
+            flash('제목, 가격, 키워드는 필수로 작성해야합니다.')
+            updateTitle=request.form['p_title']
+            updatePrice=request.form['p_price']
+            updateDescription=request.form['p_description']
+            return redirect(url_for('edit',id=id))
+    else:
+        if request.files['p_image1']:
+            f1=request.files['p_image1']
+            updateimage1=f1.filename
+            f1.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(f1.filename)))
+        if request.files['p_image2']:
+            f2=request.files['p_image2']
+            updateimage2=f2.filename
+            f2.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(f2.filename)))
+        if request.files['p_image3']:
+            f3=request.files['p_image3']
+            updateimage3=f3.filename
+            f3.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(f3.filename)))
+        
+        post=posts.query.filter_by(id=id).first()
+        post.id=id
+        post.p_title= request.form['p_title']
+        post.p_keyword= request.form['p_keyword']
+        post.p_price= request.form['p_price']
+        post.p_seller=session['nickname']
+        post.p_description=request.form['p_description']
+        post.p_image1=updateimage1
+        post.p_image2=updateimage2
+        post.p_image3=updateimage3
+        post.p_soldOut=False
+        db.session.commit()
+        updateTitle=''
+        updatePrice=''
+        updateDescription=''
+        updateimage1=''
+        updateimage2=''
+        updateimage3='' 
+        flash('Record was successfully added')
+        return redirect(url_for('detail',id=id))
 
 @app.route('/follow/')
 def follow():
+    return render_template('follow.html')
+
+@app.route('/manage/')
+def manage():
+    return render_template('follow.html')
+
+@app.route('/profile/')
+def profile():
     return render_template('follow.html')
     
 
