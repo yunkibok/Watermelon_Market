@@ -45,15 +45,23 @@
                     {%endif%}
                 </div>
                 <div class='title'>{{post.p_title}}</div>
-                <div class='cost'>{{post.p_price}}</div>
-                <a href='http://www.naver.com/' class='router'><div class='seller'>{{post.p_seller}}</div></a>
+                {%if post.p_soldOut==False%}
+                    <div class='cost'>{{post.p_price}}</div>
+                {%else%}
+                    <div class='cost'>판매 완료</div>
+                    {%endif%}
+                <a href="{{ url_for('profile', nickname=post.p_seller) }}" class='router'><div class='seller'>{{post.p_seller}}</div></a>
                 <div class='keyword'>{{post.p_keyword}}</div>
                 <div class='description'>{{post.p_description}}</div>
                 {%if post.p_seller==session['nickname']%}
                 <form action="{{ url_for('edit', id=post.id) }}" method='POST'>
                 <input type='submit' value='수정 하기' class='soldOutBtn'>
                 </form>
-                <input type='button' value='판매 완료' class='soldOutBtn' style='top:11%;'>
+                    {%if post.p_soldOut==False%}
+                    <form action="{{ url_for('soldOut', id=post.id) }}" method='POST'>
+                        <input type='submit' value='판매 완료' class='soldOutBtn' style='top:11%;'>
+                    </form>
+                    {%endif%}
                 {%endif%}
             </div>
         </div>

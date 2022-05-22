@@ -33,8 +33,8 @@
             <ul>
                 <li><a href='{{url_for('search', keyword='all')}}'>상품 구경</a></li>
                 <li><a href='{{url_for('register')}}'>상품 등록</a></li>
-                <li><a href='{{url_for('search', keyword='all')}}'>상품 관리</a></li>
-                <li><a href='{{url_for('follow')}}'>팔로워 관리</a></li>
+                <li><a href='{{url_for('profile', nickname=session['nickname'])}}'>상품 관리</a></li>
+                <li><a href='{{url_for('follow', nickname=session['nickname'])}}'>팔로워 관리</a></li>
             </ul>
         </nav>
         <div class='body'>

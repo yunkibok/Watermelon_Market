@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename = 'profile.css') }}">
+        <!--flash 메세지를 보여주기 위한 프로세스-->
+        {% with messages=get_flashed_messages()%}
+        {% if messages %}
+            <script>
+                alert("{{messages[-1]}}")
+            </script>
+        {% endif %}
+        {%endwith%}
+
+    </head>
+    <body>
+        <header>
+                <a href='{{ url_for('home') }}'>
+                    <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}">
+                </a>
+                <form class='searchBar' action='{{url_for('search',keyword='keyword')}}' method='POST'>
+                    <select name='searchBar' class='searchTxt'>
+                        <option selected hidden value='default'>키워드로 검색해보세요!</option>
+                        <option value='패션의류-잡화'>패션의류-잡화</option>
+                        <option value='뷰티'>뷰티</option>
+                        <option value='출산-유아동'>출산-유아동</option>
+                        <option value='식품'>식품</option>
+                        <option value='주방용품'>주방용품</option>
+                        <option value='생활용품'>생활용품</option>
+                        <option value='홈인테리어'>홈인테리어</option>
+                        <option value='가전디지털'>가전디지털</option>
+                        <option value='스포츠-레저'>스포츠-레저</option>
+                        <option value='자동차용품'>자동차용품</option>
+                        <option value='도서-음반-DVD'>도서-음반-DVD</option>
+                        <option value='완구-취미'>완구-취미</option>
+                        <option value='문구-오피스'>문구-오피스</option>
+                        <option value='반려동물용품'>반려동물용품</option>
+                        <option value='헬스-건강식품'>헬스-건강식품</option>
+                        <option value='여행-티켓'>여행-티켓</option>
+                    </select>
+                    <input type='submit' class='searchBtn' value='검색'>
+                </form>
+                {%if 'nickname' not in session%}
+                    <input type='button' value='회원가입' class='button' style='right: 25%' onclick="location.href='{{url_for('signUp')}}'">
+                    <input type='button' value='로그인' class='button' style='right: 15%' onclick="location.href='{{url_for('signIn')}}'">
+                {%else%}
+                <div class='button' style='right: 25%; text-align:end;'>환영합니다! <br><b>{{session['nickname']}}</b>님</div>
+                <input type='button' value='로그아웃' class='button' style='right: 15%' onclick="location.href='{{url_for('signOut')}}'">
+                {%endif%}
+        </header>
+        <nav>
+            <ul>
+                <li><a href='{{url_for('search',keyword='all')}}'>상품 구경</a></li>
+                <li><a href='{{url_for('register')}}'>상품 등록</a></li>
+                <li><a href='https://www.naver.com/'>상품 관리</a></li>
+                <li><a href='https://www.naver.com/'>팔로워 관리</a></li>
+            </ul>
+        </nav>
+        <div class='body'>
+            <div class='body' style='width:70%; height:10%; left:15%; background-color:white; top:0%;'>
+                <div class='body' style='width:60%; height:50%; left:15%; background-color:white; top:25%; font-size:large;'>{{nickname}}님의 상품 목록</div>
+                {%if session['nickname']!=nickname and follow.count()==0%}
+                <form action='{{url_for('following',nickname=nickname)}}' method='POST'>
+                    <input type='submit' value='팔로우 하기' class='soldOutBtn'>
+                </form>
+                {%endif%}
+            </div>
+            <div class='body' style='width:70%; height:90%; left:15%; background-color:white; top:10%; overflow-y:scroll;'>
+
+                {%if keyword!='all' and list.count()==0%}
+                <div class='container'>등록하신 상품이 없습니다.</div>
+                {%endif%}
+                {%for product in list%}
+                    <a href='{{url_for('detail', id=product.id)}}'>
+                        <div class='container'>
+                            {%if product.p_image1!=''%}
+                            <img src="{{ url_for('static', filename = '/uploads/' + product.p_image1) }}" class='preview'>
+                            {% elif product.p_image2!=''%}
+                            <img src="{{ url_for('static', filename = '/uploads/' + product.p_image2) }}" class='preview'>
+                            {% elif product.p_image3!=''%}
+                            <img src="{{ url_for('static', filename = '/uploads/' + product.p_image3) }}" class='preview'>
+                            {%else%}
+                            <div class='preview'>이미지가 <br>등록되지 않은 <br>상품입니다</div>
+                            {%endif%}
+                            <div class='title'>{{product.p_title}}</div>
+                            <div class='cost'>{{product.p_price}}</div>
+                            <div class='seller'>{{product.p_seller}}</div>
+                            <hr></hr>
+                        </div>
+                    </a>
+                {%endfor%}
+
+            </div>
+        </div>
+
+
+
+        <footer>
+            <p class='copyright'>Copyright 2022. Watermelon Market Inc.</p>
+        </footer>
+
+    </body>
+</html>

@@ -2,6 +2,14 @@
 <html>
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename = 'follow.css') }}">
+                <!--flash 메세지를 보여주기 위한 프로세스-->
+                {% with messages=get_flashed_messages()%}
+                {% if messages %}
+                    <script>
+                        alert("{{messages[-1]}}")
+                    </script>
+                {% endif %}
+                {%endwith%}
     </head>
     <body>
         <header>
@@ -26,30 +34,17 @@
         <div class='body'>
             <div class='body' style='width:70%; height:100%; left:15%; background-color:white; top:0%; overflow-y:scroll;'>
                 
+                {%for relation in follow%}
                 <div class='container'>
-                    <a href="http://naver.com">  
-                        <div class='followee'>이름</div>
+                    <a href='{{url_for('profile',nickname=relation.f_followee)}}'>  
+                        <div class='followee'>{{relation.f_followee}}</div>
                     </a>
-                    <input type='button' value='언팔로우' class='unfollow'>
+                    <!--<input type='button' value='언팔로우' class='unfollow'>-->
                     <hr></hr>
                     
                 </div>
-                <div class='container'>
-                    <a href="http://naver.com">  
-                        <div class='followee'>이름</div>
-                    </a>
-                    <input type='button' value='언팔로우' class='unfollow'>
-                    <hr></hr>
-                    
-                </div>
-                <div class='container'>
-                    <a href="http://naver.com">  
-                        <div class='followee'>이름</div>
-                    </a>
-                    <input type='button' value='언팔로우' class='unfollow'>
-                    <hr></hr>
-                    
-                </div>
+                {%endfor%}
+
                 
             
             </div>

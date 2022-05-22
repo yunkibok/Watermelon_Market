@@ -42,6 +42,15 @@ class posts(db.Model):
         self.p_image1=image1
         self.p_image2=image2
         self.p_image3=image3
+        
+class follows(db.Model):
+    id=db.Column(db.Integer, primary_key=True,unique=True,autoincrement=True)
+    f_follower=db.Column(db.String(30))
+    f_followee=db.Column(db.String(30))
+    
+    def __init__(self, follower, followee):
+        self.f_follower=follower
+        self.f_followee=followee
 
 @app.route('/')
 def home():
@@ -378,17 +387,38 @@ def update(id):
         flash('Record was successfully added')
         return redirect(url_for('detail',id=id))
 
-@app.route('/follow/')
-def follow():
-    return render_template('follow.html')
+@app.route('/soldOut/<id>',methods=['GET','POST'])
+def soldOut(id):
+    post=posts.query.filter_by(id=id).first()
+    post.p_soldOut=True
+    db.session.commit()
+    flash('sold out')
+    return redirect(url_for('detail',id=id))
 
-@app.route('/manage/')
-def manage():
-    return render_template('follow.html')
 
-@app.route('/profile/')
-def profile():
-    return render_template('follow.html')
+@app.route('/profile/<nickname>',methods=['GET','POST'])
+def profile(nickname):
+    list=posts.query.filter_by(p_seller=nickname)
+    follow=follows.query.filter_by(f_follower=session['nickname'],f_followee=nickname)
+    return render_template('profile.html',list=list, nickname=nickname, follow=follow)
+
+@app.route('/follow/<nickname>',methods=['GET','POST'])
+def follow(nickname):
+    follow=follows.query.filter_by(f_follower=nickname)
+    return render_template('follow.html', follow=follow)
+
+
+
+
+@app.route('/following/<nickname>',methods=['GET','POST'])
+def following(nickname):
+    follow=follows(session['nickname'], nickname)
+    db.session.add(follow)
+    db.session.commit()
+    flash('follow success')
+    return redirect(url_for('follow',nickname=session['nickname']))
+    
+
     
 
 if __name__=='__main__':
