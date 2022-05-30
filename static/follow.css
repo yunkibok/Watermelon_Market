@@ -90,7 +90,7 @@ footer {
     position: absolute; 
     top: 25%;
     height: 50%;
-    width: 89%;
+    width: 90%;
     margin: 0;
     padding: 0;
     font-size: large;
@@ -100,7 +100,7 @@ footer {
     position: absolute; 
     top: 25%;
     right: 0%;
-    height: 54%;
+    height: 50%;
     width: 10%;
     margin: 0;
     padding: 0;
@@ -109,7 +109,7 @@ footer {
 .button {
     position: absolute; 
     top: 25%;
-    height: 54%;
+    height: 50%;
     width: 8%;
     margin: 0;
     padding: 0;

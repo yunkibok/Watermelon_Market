@@ -13,22 +13,51 @@
     </head>
     <body>
         <header>
-                <a href='http://127.0.0.1:5500/templates/home.html'>
-                    <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}">
-                </a>
-                <form class='searchBar'>
-                    <input type='text' class='searchTxt' placeholder='키워드로 검색해보세요!'>
+            <a href='{{ url_for('home') }}'>
+                <img class='logo' src="{{ url_for('static', filename = 'logo.png') }}">
+            </a>
+                <form class='searchBar' action='{{url_for('search',keyword='keyword')}}' method='POST'>
+                    <select name='searchBar' class='searchTxt'>
+                        <option selected hidden value='default'>키워드로 검색해보세요!</option>
+                        <option value='패션의류-잡화'>패션의류-잡화</option>
+                        <option value='뷰티'>뷰티</option>
+                        <option value='출산-유아동'>출산-유아동</option>
+                        <option value='식품'>식품</option>
+                        <option value='주방용품'>주방용품</option>
+                        <option value='생활용품'>생활용품</option>
+                        <option value='홈인테리어'>홈인테리어</option>
+                        <option value='가전디지털'>가전디지털</option>
+                        <option value='스포츠-레저'>스포츠-레저</option>
+                        <option value='자동차용품'>자동차용품</option>
+                        <option value='도서-음반-DVD'>도서-음반-DVD</option>
+                        <option value='완구-취미'>완구-취미</option>
+                        <option value='문구-오피스'>문구-오피스</option>
+                        <option value='반려동물용품'>반려동물용품</option>
+                        <option value='헬스-건강식품'>헬스-건강식품</option>
+                        <option value='여행-티켓'>여행-티켓</option>
+                    </select>
                     <input type='submit' class='searchBtn' value='검색'>
                 </form>
-                <input type='button' value='회원가입' class='button' style='right: 25%' onclick="location.href='http://127.0.0.1:5500/templates/signUp.html'">
-                <input type='button' value='로그인' class='button' style='right: 15%' onclick="location.href='http://127.0.0.1:5500/templates/signIn.html'">
+                {%if 'nickname' not in session%}
+                <input type='button' value='회원가입' class='button' style='right: 25%' onclick="location.href='{{url_for('signUp')}}'">
+                <input type='button' value='로그인' class='button' style='right: 15%' onclick="location.href='{{url_for('signIn')}}'">
+            {%else%}
+            <div class='button' style='right: 25%; text-align:end;'>환영합니다! <br><b>{{session['nickname']}}</b>님</div>
+            <input type='button' value='로그아웃' class='button' style='right: 15%' onclick="location.href='{{url_for('signOut')}}'">
+            {%endif%}
         </header>
         <nav>
             <ul>
-                <li><a href='https://www.naver.com/'>상품 구경</a></li>
-                <li><a href='https://www.naver.com/'>상품 등록</a></li>
-                <li><a href='https://www.naver.com/'>상품 관리</a></li>
-                <li><a href='https://www.naver.com/'>팔로워 관리</a></li>
+                <li><a href='{{url_for('search', keyword='all')}}'>상품 구경</a></li>
+                {%if 'nickname' in session%}
+                    <li><a href='{{url_for('register')}}'>상품 등록</a></li>
+                    <li><a href='{{url_for('profile', nickname=session['nickname'])}}'>상품 관리</a></li>
+                    <li><a href='{{url_for('follow', nickname=session['nickname'])}}'>팔로잉 보기</a></li>
+                {%else%}
+                    <li><a href='{{url_for('warning', type='register')}}'>상품 등록</a></li>
+                    <li><a href='{{url_for('warning', type='profile')}}'>상품 관리</a></li>
+                    <li><a href='{{url_for('warning', type='follow')}}'>팔로잉 보기</a></li>
+                {%endif%}
             </ul>
         </nav>
         <div class='body'>
@@ -44,24 +73,34 @@
                         <a href="{{ url_for('image', name = post.p_image3) }}" target='_blank'><img src="{{ url_for('static', filename = '/uploads/' + post.p_image3) }}" class='preview'></a>
                     {%endif%}
                 </div>
-                <div class='title'>{{post.p_title}}</div>
+                <label class='label'>제목</label>
+                <textarea disabled class='title'>{{post.p_title}}</textarea>
+                <label class='label' style='top:39%;'>가격</label>
                 {%if post.p_soldOut==False%}
-                    <div class='cost'>{{post.p_price}}</div>
+                    <textarea disabled class='cost'>{{post.p_price}}</textarea>
                 {%else%}
-                    <div class='cost'>판매 완료</div>
-                    {%endif%}
-                <a href="{{ url_for('profile', nickname=post.p_seller) }}" class='router'><div class='seller'>{{post.p_seller}}</div></a>
+                    <textarea disabled class='cost'>판매 완료</textarea>
+                {%endif%}
+                
+                <label class='label' style='top:47%;'>판매자</label>
+                {%if 'nickname' in session%}
+                    <a href="{{ url_for('profile', nickname=post.p_seller) }}" class='router'><div class='seller'>{{post.p_seller}}</div></a>
+                {%else%}
+                    <div class='seller' style='text-decoration:none;'>{{post.p_seller}}</div>
+                {%endif%}
+
+                <label class='label' style='top:55%;'>키워드</label>
                 <div class='keyword'>{{post.p_keyword}}</div>
-                <div class='description'>{{post.p_description}}</div>
-                {%if post.p_seller==session['nickname']%}
+
+                <label class='label' style='top:64%;'>설명</label>
+                <textarea class='description' disabled>{{post.p_description}}</textarea>
+                {%if post.p_seller==session['nickname'] and post.p_soldOut==False%}
                 <form action="{{ url_for('edit', id=post.id) }}" method='POST'>
                 <input type='submit' value='수정 하기' class='soldOutBtn'>
                 </form>
-                    {%if post.p_soldOut==False%}
                     <form action="{{ url_for('soldOut', id=post.id) }}" method='POST'>
                         <input type='submit' value='판매 완료' class='soldOutBtn' style='top:11%;'>
                     </form>
-                    {%endif%}
                 {%endif%}
             </div>
         </div>

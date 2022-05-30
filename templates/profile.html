@@ -49,10 +49,16 @@
         </header>
         <nav>
             <ul>
-                <li><a href='{{url_for('search',keyword='all')}}'>상품 구경</a></li>
-                <li><a href='{{url_for('register')}}'>상품 등록</a></li>
-                <li><a href='https://www.naver.com/'>상품 관리</a></li>
-                <li><a href='https://www.naver.com/'>팔로워 관리</a></li>
+                <li><a href='{{url_for('search', keyword='all')}}'>상품 구경</a></li>
+                {%if 'nickname' in session%}
+                    <li><a href='{{url_for('register')}}'>상품 등록</a></li>
+                    <li><a href='{{url_for('profile', nickname=session['nickname'])}}'>상품 관리</a></li>
+                    <li><a href='{{url_for('follow', nickname=session['nickname'])}}'>팔로잉 보기</a></li>
+                {%else%}
+                    <li><a href='{{url_for('warning', type='register')}}'>상품 등록</a></li>
+                    <li><a href='{{url_for('warning', type='profile')}}'>상품 관리</a></li>
+                    <li><a href='{{url_for('warning', type='follow')}}'>팔로잉 보기</a></li>
+                {%endif%}
             </ul>
         </nav>
         <div class='body'>
@@ -81,9 +87,13 @@
                             {%else%}
                             <div class='preview'>이미지가 <br>등록되지 않은 <br>상품입니다</div>
                             {%endif%}
-                            <div class='title'>{{product.p_title}}</div>
-                            <div class='cost'>{{product.p_price}}</div>
-                            <div class='seller'>{{product.p_seller}}</div>
+                            <pre class='title'>제목: {{product.p_title}}</pre>
+                            {%if product.p_soldOut==False%}
+                            <pre class='cost'>가격: {{product.p_price}}</pre>
+                        {%else%}
+                            <pre class='cost'>가격: 판매 완료</pre>
+                            {%endif%}
+                            <pre class='seller'>판매자: {{product.p_seller}}</pre>
                             <hr></hr>
                         </div>
                     </a>

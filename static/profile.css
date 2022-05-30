@@ -149,6 +149,7 @@ span {
     top: 10%;
     left: 3%;
     height: 90%;
+    width:17%;
 }
 
 .title{
@@ -157,7 +158,7 @@ span {
     top: 10%;
     left: 23%;
     height: 20%;
-    font-size:x-large;
+    font-size:large;
     font-weight:bold;
 }
 
@@ -169,6 +170,7 @@ span {
     height: 20%;
     font-size:large;
     color:#548235;
+    font-weight:bold;
 }
 
 .seller {
@@ -178,6 +180,7 @@ span {
     left: 23%;
     height: 20%;
     font-size:large;
+    font-weight:bold;
 }
 
 hr{

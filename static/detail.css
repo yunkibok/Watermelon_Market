@@ -43,7 +43,7 @@ footer {
     position: absolute; 
     top: 25%;
     height: 50%;
-    width: 89%;
+    width: 90%;
     margin: 0;
     padding: 0;
     font-size: large;
@@ -53,7 +53,7 @@ footer {
     position: absolute; 
     top: 25%;
     right: 0%;
-    height: 54%;
+    height: 50%;
     width: 10%;
     margin: 0;
     padding: 0;
@@ -62,7 +62,7 @@ footer {
 .button {
     position: absolute; 
     top: 25%;
-    height: 54%;
+    height: 50%;
     width: 8%;
     margin: 0;
     padding: 0;
@@ -128,7 +128,7 @@ a {
     left: 15%;
     height: 25%;
     width: 50%;
-    overflow-x:scroll;
+    overflow-x:auto;
     white-space: nowrap;
 }
 
@@ -140,51 +140,66 @@ a {
     display: inline;
 }
 
-.title{
+.label{
     position: absolute;
-    width:70%;
+    width:5%;
     top: 31%;
     left: 15%;
     height: 5%;
-    font-size:x-large;
+    font-size:medium;
+    font-weight:bold;
+}
+
+.title{
+    position: absolute;
+    width:65%;
+    top: 31%;
+    left: 20%;
+    height: 5%;
+    font-size:medium;
     font-weight:bold;
 }
 
 .cost{
     position: absolute;
-    width:70%;
+    width:65%;
     top: 39%;
-    left: 15%;
+    left: 20%;
     height: 5%;
-    font-size:large;
+    font-size:medium;
     color:#548235;
+    font-weight:bold;
 }
 
 .keyword{
     position: absolute;
-    width:70%;
+    width:65%;
     top: 55%;
-    left: 15%;
+    left: 20%;
     height: 5%;
-    font-size:large;
+    font-size:medium;
+    font-weight:bold;
 }
 
 .seller {
     position: absolute;
     top: 47%;
-    left: 15%;
+    left: 20%;
     height: 5%;
-    font-size:large;
+    font-size:medium;
     text-decoration: underline;
+    font-weight:bold;
 }
 
 .description {
     position: absolute;
-    width:70%;
+    width:65%;
     top: 64%;
-    left: 15%;
+    left: 20%;
     height: 33%;
-    font-size:large;
+    font-size:medium;
+    overflow-y: scroll;
+    font-weight:bold;
 }
 
 .soldOutBtn{
