@@ -72,14 +72,16 @@
                 {%endif%}
 
                 {%for relation in follow%}
+                <a href='{{url_for('profile',nickname=relation.f_followee)}}'>
                 <div class='container'>
-                    <a href='{{url_for('profile',nickname=relation.f_followee)}}'>  
+                      
                         <div class='followee'>{{relation.f_followee}}</div>
-                    </a>
+                    
                     <!--<input type='button' value='언팔로우' class='unfollow'>-->
                     <hr></hr>
                     
                 </div>
+                </a>
                 {%endfor%}
 
                 

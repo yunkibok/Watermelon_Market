@@ -354,7 +354,7 @@ def register():
             registerimage3='' 
             flash('상품 등록을 성공했습니다.')
             # 생성을 마치면 홈으로 이동
-            return redirect(url_for('home'))
+            return redirect(url_for('profile',nickname=session['nickname']))
     # 생성을 제대로 마치지 못했거나 'GET'이면 임시 저장값을 이용해 재등록 유도
     return render_template('register.html', title=registerTitle, price=registerPrice, description=registerDescription)
 
